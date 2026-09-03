@@ -6,3 +6,7 @@ node_modules/
 dist/
 .venv/
 __pycache__/
+# aia-harness
+.claude/settings.local.json
+.claude/*.local.*
+.claude/.aia-harness-pending/
