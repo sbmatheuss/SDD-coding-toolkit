@@ -18,7 +18,7 @@ This repo is documentation-only (Markdown + templates) — no build, lint, test,
 ## Canonical commands
 Always use these exact commands (do not guess):
 
-- _No canonical commands detected — fill these in._
+- None — this repo has no build, lint, test, or run step (see Stack above). The Engineering-rules bullet "run the lint + test commands above" is a no-op here by design.
 
 ## Workflow & Agents
 

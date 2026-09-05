@@ -18,14 +18,7 @@
 import { readFileSync, existsSync } from "node:fs";
 import { homedir } from "node:os";
 import path from "node:path";
-
-function readStdin() {
-  try {
-    return readFileSync(0, "utf8");
-  } catch {
-    return "";
-  }
-}
+import { readStdinRaw, parseHookEvent } from "./hook-io.mjs";
 
 /** @param {string} file @returns {boolean} */
 function hasFrontmatterModel(file) {
@@ -37,7 +30,8 @@ function hasFrontmatterModel(file) {
 }
 
 try {
-  const event = JSON.parse(readStdin() || "{}");
+  const event = parseHookEvent(readStdinRaw());
+  if (!event) process.exit(0);
   const t = event.tool_input ?? {};
 
   if (t.model) process.exit(0); // rule 1: explicit choice on the call

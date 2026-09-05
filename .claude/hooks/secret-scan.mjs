@@ -4,24 +4,10 @@
  * committed secret. Exit code 2 blocks the tool call; exit 0 allows it.
  * Wire this in .claude/settings.json under PreToolUse with matcher "Edit|Write|MultiEdit".
  */
-import fs from "node:fs";
+import { readStdinRaw, parseHookEvent } from "./hook-io.mjs";
 
-/** @returns {string} */
-function readStdin() {
-  try {
-    return fs.readFileSync(0, "utf8");
-  } catch {
-    return "";
-  }
-}
-
-/** @type {any} */
-let event = {};
-try {
-  event = JSON.parse(readStdin() || "{}");
-} catch {
-  process.exit(0);
-}
+const event = parseHookEvent(readStdinRaw());
+if (!event) process.exit(0);
 
 const ti = event?.tool_input ?? {};
 const text = [ti.content, ti.new_string, ti.command]
