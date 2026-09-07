@@ -312,7 +312,17 @@
     "ponytail@ponytail": true,
     "superpowers@claude-plugins-official": true,
     "aia-harness@leandro-plugins-registry": true,
-    "github@claude-plugins-official": true
+    "github@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -331,6 +341,12 @@
       "source": {
         "source": "github",
         "repo": "leandrosilvaferreira/claude-plugins-registry"
+      }
+    },
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
       }
     }
   },
