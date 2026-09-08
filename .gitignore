@@ -10,3 +10,5 @@ __pycache__/
 .claude/settings.local.json
 .claude/*.local.*
 .claude/.aia-harness-pending/
+# graphify local extraction cache — regenerable, not shareable across machines/versions
+graphify-out/cache/
