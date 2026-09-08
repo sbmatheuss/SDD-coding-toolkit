@@ -1,15 +1,16 @@
 # vibe-coding-toolkit
 
-> Project memory for Claude Code. Keep this file short and high-signal.
+> Project memory for Claude Code. Keep this file short and high-signal —
+> bloated memory gets ignored. Put hard guarantees in hooks, not prose.
 
 ## Behavioral guidelines
 <!-- aia-harness:behavioral — non-negotiable; do not edit, reorder, or remove during enrichment -->
 
-1. **Think before coding** — state assumptions explicitly. If multiple interpretations exist, present them instead of picking silently. Say so when a simpler approach exists. If something is genuinely unclear, stop and ask.
-2. **Simplicity first** — minimum code that solves the problem. No speculative features, no abstractions for single-use code, no unrequested configurability, no error handling for impossible scenarios.
-3. **Surgical changes** — touch only what the request requires. Match existing style. Don't refactor, reformat, or "improve" adjacent code that wasn't part of the request.
-4. **Goal-driven execution** — turn tasks into verifiable goals. For multi-step work, state a brief plan with a verify check per step, then loop until every step is verified.
-5. **Orchestrator, not implementer** — the main session plans, decides, and coordinates; it does not implement. Delegable implementation and analysis goes to a specialist subagent, dispatched in parallel when task scopes don't conflict.
+1. **Think before coding** — state assumptions explicitly; if multiple interpretations exist, present them instead of picking silently; say so when a simpler approach exists; if something is unclear, stop and ask.
+2. **Simplicity first** — minimum code that solves the problem. No speculative features, no abstractions for single-use code, no unrequested configurability, no error handling for impossible scenarios. If 200 lines could be 50, rewrite.
+3. **Surgical changes** — touch only what the request requires; match existing style; don't refactor, reformat, or "improve" adjacent code. Remove orphans *your* change created; leave pre-existing dead code alone (mention it, don't delete it). Every changed line should trace directly to the user's request.
+4. **Goal-driven execution** — turn tasks into verifiable goals ("fix the bug" → "write a test that reproduces it, then make it pass"). For multi-step work, state a brief plan with a verify check per step, then loop until verified.
+5. **Main session = orchestrator — it does not implement.** Plan, decide, coordinate; ALL delegable implementation and analysis goes to a specialist subagent via `Agent`, parallel when scopes don't conflict.
 
 ## Stack
 
@@ -44,6 +45,7 @@ Model dispatch: an agent's frontmatter `model` wins; a generic dispatch or a pro
 | `test-engineer` | Writes unit and integration tests with TDD discipline, coverage analysis, and edge-case discovery. Use proactively after implementing new logic or when test coverage gaps are identified. |
 | `database-architect` | Designs schemas, migrations, indexes, and query strategies for correctness, integrity, and scalability. Use proactively when adding tables, modifying schemas, planning migrations, or diagnosing slow queries. |
 | `devops-engineer` | Owns deployment, CI/CD pipelines, infrastructure configuration, and production operations. Use proactively when deploying, configuring servers, setting up CI, or troubleshooting production incidents. |
+| `backend-specialist` | Implements and reviews API endpoints, server-side business logic, authentication, and database integration. Use proactively when building or modifying backend services, REST/GraphQL routes, or persistence layers. |
 | `performance-optimizer` | Profiles and fixes performance bottlenecks — slow endpoints, high memory usage, poor Core Web Vitals, and database query inefficiency. Use proactively after profiling reveals a bottleneck or when response times degrade. |
 | `product-manager` | Clarifies ambiguous requirements and prioritizes roadmap decisions when requirements are undefined before a story exists. Use when discovery and prioritization need structured analysis. |
 | `product-owner` | Translates business objectives into actionable technical specs and defines acceptance criteria for existing stories before implementation begins. Use when a story needs clear acceptance criteria before development starts. |
@@ -77,6 +79,7 @@ name as `subagent_type` instead.
 | Unit / integration tests | `test-engineer` |
 | Schema / migration / query / data modeling | `database-architect` |
 | Deploy / CI/CD / infra | `devops-engineer` |
+| Backend / API / server-side / domain logic | `backend-specialist` |
 | Performance profiling / optimization | `performance-optimizer` |
 | Understand legacy code before changing it | `code-archaeologist` |
 | Bug / crash / root-cause analysis | `debugger` |
@@ -138,14 +141,17 @@ Single-tree docs repo — no code, no nested domain `CLAUDE.md` files.
 See `docs/00-overview.md` for the philosophy behind this repo's structure.
 
 ## graphify
+<!-- aia-harness:graphify-root — knowledge-graph usage; merged section, do not remove -->
 
-This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+When graphify-out/graph.json has been generated, it holds a knowledge graph of this project — god nodes, community structure, and cross-file relationships.
 
 Rules:
+
 - For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
 - If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+- Investigating code (file search, implementations, call sites, "where is X"): alongside graphify, dispatch specialist subagents (`model: haiku`) in parallel — never one at a time, never generic-only. Cuts investigation time.
 
 @.claude/memory/INSTRUCTIONS.md
 @.claude/memory/MEMORY.md
